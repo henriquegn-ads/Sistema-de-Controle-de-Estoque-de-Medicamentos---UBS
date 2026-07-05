@@ -1,4 +1,4 @@
-# 💊 Sistema de Controle de Estoque de Medicamentos - UBS
+# Sistema de Controle de Estoque de Medicamentos - UBS
 
 ## Projeto Integrador
 
@@ -6,19 +6,19 @@ Sistema web desenvolvido para gerenciamento do estoque de medicamentos de uma Un
 
 ---
 
-## 📌 Objetivo
+## Objetivo
 
 Desenvolver uma aplicação web utilizando PHP e arquitetura MVC para auxiliar no controle do estoque de medicamentos de uma Unidade Básica de Saúde, proporcionando maior organização, segurança e confiabilidade das informações.
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 
 - Henrique Gomes do Nascimento
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - PHP 8
 - Arquitetura MVC
@@ -33,7 +33,7 @@ Desenvolver uma aplicação web utilizando PHP e arquitetura MVC para auxiliar n
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 
@@ -62,7 +62,7 @@ README.md
 
 ---
 
-## 🔐 Funcionalidades
+## Funcionalidades
 
 ### Autenticação
 
@@ -131,7 +131,7 @@ README.md
 
 ---
 
-## 🗄 Banco de Dados
+## Banco de Dados
 
 O banco de dados é composto pelas seguintes tabelas:
 
@@ -150,7 +150,7 @@ O banco de dados é composto pelas seguintes tabelas:
 
 ---
 
-## 📋 Requisitos do Sistema
+## Requisitos do Sistema
 
 - PHP 8 ou superior
 - MySQL 8 ou superior
@@ -159,7 +159,7 @@ O banco de dados é composto pelas seguintes tabelas:
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
 ### 1. Clone o repositório
 
@@ -206,7 +206,7 @@ http://localhost/ubs-estoque
 
 ---
 
-## 📷 Telas do Sistema
+## Telas do Sistema
 
 * Login
 * Dashboard
@@ -222,7 +222,7 @@ http://localhost/ubs-estoque
 
 ---
 
-## 📂 Arquitetura
+## Arquitetura
 
 O projeto segue o padrão MVC.
 
@@ -238,7 +238,7 @@ View
 
 ---
 
-## 🔒 Segurança
+## Segurança
 
 * Senhas criptografadas com `password_hash()`
 * Controle de sessões
@@ -249,7 +249,7 @@ View
 
 ---
 
-## 📈 Melhorias Futuras
+## Melhorias Futuras
 
 * Dashboard com gráficos
 * Alertas automáticos de vencimento
@@ -263,7 +263,7 @@ View
 
 ---
 
-## 📄 Licença
+## Licença
 
 Projeto desenvolvido exclusivamente para fins acadêmicos na disciplina de Projeto Integrador.
 
