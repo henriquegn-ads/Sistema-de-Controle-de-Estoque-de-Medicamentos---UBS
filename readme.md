@@ -25,9 +25,7 @@ Desenvolver uma aplicação web utilizando PHP e arquitetura MVC para auxiliar n
 - MySQL
 - HTML5
 - CSS3
-- Bootstrap 5
 - JavaScript
-- Git
 - GitHub
 - XAMPP
 
