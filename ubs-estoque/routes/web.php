@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once __DIR__ . '/../app/Controllers/DashboardController.php';
 require_once __DIR__ . '/../app/Controllers/MedicamentoController.php';
 
@@ -40,6 +42,24 @@ if ($uri === '/medicamentos/create' && $method === 'GET') {
 if ($uri === '/medicamentos/store' && $method === 'POST') {
     $controller = new MedicamentoController();
     $controller->store();
+    exit;
+}
+
+if (preg_match('#^/medicamentos/edit/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $controller = new MedicamentoController();
+    $controller->edit((int) $matches[1]);
+    exit;
+}
+
+if (preg_match('#^/medicamentos/update/(\d+)$#', $uri, $matches) && $method === 'POST') {
+    $controller = new MedicamentoController();
+    $controller->update((int) $matches[1]);
+    exit;
+}
+
+if (preg_match('#^/medicamentos/delete/(\d+)$#', $uri, $matches) && $method === 'POST') {
+    $controller = new MedicamentoController();
+    $controller->delete((int) $matches[1]);
     exit;
 }
 

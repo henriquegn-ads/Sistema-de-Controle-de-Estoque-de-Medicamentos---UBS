@@ -44,4 +44,53 @@ class Medicamento
 
         return $stmt->fetchAll();
     }
+
+    public function buscarPorId(int $id): ?array
+    {
+        $sql = "SELECT
+                    id,
+                    nome,
+                    principio_ativo,
+                    fabricante,
+                    unidade_medida,
+                    created_at
+                FROM medicamentos
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        $medicamento = $stmt->fetch();
+
+        return $medicamento ?: null;
+    }
+
+    public function atualizar(int $id, array $dados): bool
+    {
+        $sql = "UPDATE medicamentos
+                SET nome = :nome,
+                    principio_ativo = :principio_ativo,
+                    fabricante = :fabricante,
+                    unidade_medida = :unidade_medida
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id,
+            ':nome' => $dados['nome'],
+            ':principio_ativo' => $dados['principio_ativo'],
+            ':fabricante' => $dados['fabricante'],
+            ':unidade_medida' => $dados['unidade_medida']
+        ]);
+    }
+
+    public function excluir(int $id): bool
+    {
+        $sql = "DELETE FROM medicamentos WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([':id' => $id]);
+    }
 }
