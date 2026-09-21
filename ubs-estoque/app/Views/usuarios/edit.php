@@ -1,7 +1,5 @@
 <?php
-$titulo = 'Editar medicamento';
-$erro = $_SESSION['erro'] ?? null;
-unset($_SESSION['erro']);
+$titulo = 'Editar usuário';
 require_once __DIR__ . '/../layouts/header.php';
 ?>
 
@@ -28,8 +26,8 @@ require_once __DIR__ . '/../layouts/header.php';
         <main class="main-content">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Editar medicamento</h1>
-                    <p class="page-subtitle">Atualize os dados do medicamento.</p>
+                    <h1 class="page-title">Editar usuário</h1>
+                    <p class="page-subtitle">Atualize os dados e o perfil do usuário.</p>
                 </div>
             </div>
 
@@ -38,35 +36,36 @@ require_once __DIR__ . '/../layouts/header.php';
             <?php endif; ?>
 
             <section class="form-card">
-                <form method="POST" action="/medicamentos/update/<?= (int) $medicamento['id'] ?>">
+                <form method="POST" action="/usuarios/update/<?= (int) $usuario['id'] ?>">
                     <div class="form-group">
-                        <label for="nome">Nome do medicamento</label>
-                        <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($medicamento['nome']) ?>" class="form-control" required>
+                        <label for="nome">Nome</label>
+                        <input class="form-control" type="text" id="nome" name="nome" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="principio_ativo">Princípio ativo</label>
-                        <input type="text" id="principio_ativo" name="principio_ativo" value="<?= htmlspecialchars($medicamento['principio_ativo']) ?>" class="form-control" required>
+                        <label for="email">E-mail</label>
+                        <input class="form-control" type="email" id="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="fabricante">Fabricante</label>
-                        <input type="text" id="fabricante" name="fabricante" value="<?= htmlspecialchars($medicamento['fabricante']) ?>" class="form-control">
+                        <label for="senha">Nova senha</label>
+                        <input class="form-control" type="password" id="senha" name="senha" placeholder="Deixe em branco para manter a senha atual">
                     </div>
 
                     <div class="form-group">
-                        <label for="unidade_medida">Unidade de medida</label>
-                        <input type="text" id="unidade_medida" name="unidade_medida" value="<?= htmlspecialchars($medicamento['unidade_medida']) ?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="estoque_minimo">Estoque mínimo</label>
-                        <input type="number" id="estoque_minimo" name="estoque_minimo" value="<?= htmlspecialchars($medicamento['estoque_minimo'] ?? 0) ?>" class="form-control" min="0" required>
+                        <label for="perfil_id">Perfil</label>
+                        <select class="form-control" id="perfil_id" name="perfil_id" required>
+                            <?php foreach ($perfis as $perfil): ?>
+                                <option value="<?= (int) $perfil['id'] ?>" <?= ((int) $usuario['perfil_id'] === (int) $perfil['id']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($perfil['nome']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" class="btn-primary">Salvar alterações</button>
-                        <a href="/medicamentos" class="btn-secondary">Cancelar</a>
+                        <a href="/usuarios" class="btn-secondary">Cancelar</a>
                     </div>
                 </form>
             </section>

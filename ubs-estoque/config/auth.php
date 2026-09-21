@@ -5,6 +5,14 @@ class Auth
     public static function iniciarSessao(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
+            $caminhoSessoes = __DIR__ . '/../sessions';
+
+            if (!is_dir($caminhoSessoes)) {
+                mkdir($caminhoSessoes, 0755, true);
+            }
+
+            session_save_path($caminhoSessoes);
+
             session_start();
         }
     }
@@ -18,7 +26,7 @@ class Auth
     public static function exigirLogin(): void
     {
         if (!self::autenticado()) {
-            header('Location: /ubs-estoque/public/login');
+            header('Location: /login');
             exit;
         }
     }
@@ -53,7 +61,15 @@ class Auth
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
         }
 
         session_destroy();

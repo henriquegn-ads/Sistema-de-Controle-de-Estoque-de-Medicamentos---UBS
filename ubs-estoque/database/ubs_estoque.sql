@@ -1,5 +1,3 @@
-USE ubs_estoque;
-
 CREATE TABLE IF NOT EXISTS perfis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL UNIQUE
@@ -23,3 +21,13 @@ WHERE NOT EXISTS (SELECT 1 FROM perfis WHERE nome = 'Administrador');
 INSERT INTO perfis (nome)
 SELECT 'Funcionário'
 WHERE NOT EXISTS (SELECT 1 FROM perfis WHERE nome = 'Funcionário');
+
+
+CREATE TABLE IF NOT EXISTS medicamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    principio_ativo VARCHAR(150),
+    fabricante VARCHAR(150),
+    unidade_medida VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

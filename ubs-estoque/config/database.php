@@ -7,12 +7,11 @@ class Database
     public static function getConnection(): PDO
     {
         if (self::$connection === null) {
-
-            $host = 'localhost';
+            $host = 'sql113.infinityfree.com';
             $port = '3306';
-            $database = 'ubs_estoque';
-            $username = 'root';
-            $password = 'admin';
+            $database = 'if0_42964725_ubs_estoque';
+            $username = 'if0_42964725';
+            $password = 'rick6925';
 
             $dsn = "mysql:host={$host};port={$port};dbname={$database};charset=utf8mb4";
 

@@ -17,7 +17,7 @@ class AuthController
         Auth::iniciarSessao();
 
         if (Auth::autenticado()) {
-            header('Location: /ubs-estoque/public/');
+            header('Location: /');
             exit;
         }
 
@@ -36,7 +36,7 @@ class AuthController
 
         if ($email === '' || $senha === '') {
             $_SESSION['erro_login'] = 'Informe o e-mail e a senha.';
-            header('Location: /ubs-estoque/public/login');
+            header('Location: /login');
             exit;
         }
 
@@ -44,13 +44,13 @@ class AuthController
 
         if ($usuario === null || !password_verify($senha, $usuario['senha'])) {
             $_SESSION['erro_login'] = 'E-mail ou senha inválidos.';
-            header('Location: /ubs-estoque/public/login');
+            header('Location: /login');
             exit;
         }
 
         Auth::login($usuario);
 
-        header('Location: /ubs-estoque/public/');
+        header('Location: /');
         exit;
     }
 
@@ -58,7 +58,7 @@ class AuthController
     {
         Auth::logout();
 
-        header('Location: /ubs-estoque/public/login');
+        header('Location: /login');
         exit;
     }
 }

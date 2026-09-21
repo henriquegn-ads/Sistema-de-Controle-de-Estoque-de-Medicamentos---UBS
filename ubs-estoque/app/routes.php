@@ -14,7 +14,7 @@ require_once __DIR__ . '/../app/Controllers/ConfiguracaoController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-$basePath = '/ubs-estoque';
+$basePath = '';
 
 if (strpos($uri, $basePath) === 0) {
     $uri = substr($uri, strlen($basePath));

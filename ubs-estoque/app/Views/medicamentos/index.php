@@ -1,81 +1,109 @@
 <?php
-
 $titulo = 'Medicamentos';
-
 require_once __DIR__ . '/../layouts/header.php';
-require_once __DIR__ . '/../layouts/sidebar.php';
 ?>
 
-<main class="max-w-7xl mx-auto px-6 py-8">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-800">Medicamentos</h1>
-            <p class="text-slate-500 mt-1">Medicamentos cadastrados no sistema.</p>
-        </div>
+<div class="app-shell">
+    <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
 
-        <a href="/ubs-estoque/public/medicamentos/create" class="rounded-lg bg-slate-800 px-5 py-2 text-white hover:bg-slate-700">
-            Novo medicamento
-        </a>
+    <div class="content-area">
+        <header class="topbar">
+            <button class="hamburger" type="button" onclick="toggleSidebar()" aria-label="Abrir menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <div class="user-area">
+                <span>Olá, <?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Usuário') ?>!</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="7" r="3.2"/>
+                    <path d="M5 21v-2.1a5.9 5.9 0 0 1 11.8 0V21"/>
+                </svg>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Medicamentos</h1>
+                    <p class="page-subtitle">Medicamentos cadastrados no sistema.</p>
+                </div>
+                <a href="/medicamentos/create" class="new-button">Novo medicamento</a>
+            </div>
+
+            <?php if (!empty($sucesso)): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
+            <?php endif; ?>
+
+            <?php if (!empty($erro)): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($erro) ?></div>
+            <?php endif; ?>
+
+            <div class="filter-box">
+                <input type="text" id="filtroMedicamentos" class="filter-input" placeholder="Filtrar medicamentos..." autocomplete="off">
+            </div>
+
+            <section class="table-card">
+                <div class="table-wrap">
+                    <table id="tabelaMedicamentos">
+                        <thead>
+                            <tr>
+                                <th>ID Medicamento</th>
+                                <th>Princípio Ativo</th>
+                                <th>Fabricante</th>
+                                <th>Unidade</th>
+                                <th>Estoque Mínimo</th>
+                                <th>Saldo Atual</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($medicamentos)): ?>
+                                <tr>
+                                    <td colspan="7" class="empty">Nenhum medicamento cadastrado.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($medicamentos as $medicamento): ?>
+                                    <tr>
+                                        <td><?= (int) $medicamento['id'] ?></td>
+                                        <td><?= htmlspecialchars($medicamento['principio_ativo'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($medicamento['fabricante'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($medicamento['unidade_medida'] ?? '') ?></td>
+                                        <td><?= (int) ($medicamento['estoque_minimo'] ?? 0) ?></td>
+                                        <td><?= (int) ($medicamento['saldo_atual'] ?? 0) ?></td>
+                                        <td>
+                                            <div class="actions">
+                                                <a href="/medicamentos/edit/<?= (int) $medicamento['id'] ?>" class="edit-button">Editar</a>
+                                                <form method="POST" action="/medicamentos/delete/<?= (int) $medicamento['id'] ?>" onsubmit="return confirm('Deseja realmente excluir este medicamento?');">
+                                                    <button type="submit" class="delete-button">Excluir</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
     </div>
+</div>
 
-    <?php if (!empty($sucesso)): ?>
-        <div class="mb-6 rounded-lg bg-green-100 px-4 py-3 text-green-700">
-            <?= htmlspecialchars($sucesso) ?>
-        </div>
-    <?php endif; ?>
+<script>
+const filtroMedicamentos = document.getElementById('filtroMedicamentos');
 
-    <?php if (!empty($erro)): ?>
-        <div class="mb-6 rounded-lg bg-red-100 px-4 py-3 text-red-700">
-            <?= htmlspecialchars($erro) ?>
-        </div>
-    <?php endif; ?>
+if (filtroMedicamentos) {
+    filtroMedicamentos.addEventListener('input', function () {
+        const filtro = this.value.toLowerCase().trim();
+        const linhas = document.querySelectorAll('#tabelaMedicamentos tbody tr');
 
-    <div class="overflow-x-auto bg-white rounded-xl shadow-sm">
-        <table class="w-full text-left">
-            <thead class="bg-slate-100">
-                <tr>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">ID</th>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">Medicamento</th>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">Princípio ativo</th>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">Fabricante</th>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">Unidade</th>
-                    <th class="px-5 py-3 text-sm font-semibold text-slate-700">Ações</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200">
-                <?php if (empty($medicamentos)): ?>
-                    <tr>
-                        <td colspan="6" class="px-5 py-6 text-center text-slate-500">
-                            Nenhum medicamento cadastrado.
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($medicamentos as $medicamento): ?>
-                        <tr>
-                            <td class="px-5 py-4"><?= (int) $medicamento['id'] ?></td>
-                            <td class="px-5 py-4"><?= htmlspecialchars($medicamento['nome']) ?></td>
-                            <td class="px-5 py-4"><?= htmlspecialchars($medicamento['principio_ativo']) ?></td>
-                            <td class="px-5 py-4"><?= htmlspecialchars($medicamento['fabricante']) ?></td>
-                            <td class="px-5 py-4"><?= htmlspecialchars($medicamento['unidade_medida']) ?></td>
-                            <td class="px-5 py-4">
-                                <div class="flex gap-2">
-                                    <a href="/ubs-estoque/public/medicamentos/edit/<?= (int) $medicamento['id'] ?>" class="rounded-lg border border-slate-300 px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">
-                                        Editar
-                                    </a>
-
-                                    <form method="POST" action="/ubs-estoque/public/medicamentos/delete/<?= (int) $medicamento['id'] ?>" onsubmit="return confirm('Deseja realmente excluir este medicamento?');">
-                                        <button type="submit" class="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700">
-                                            Excluir
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-</main>
+        linhas.forEach(function (linha) {
+            linha.style.display = linha.textContent.toLowerCase().includes(filtro) ? '' : 'none';
+        });
+    });
+}
+</script>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

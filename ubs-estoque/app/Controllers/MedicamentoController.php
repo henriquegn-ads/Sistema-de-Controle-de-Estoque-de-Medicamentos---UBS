@@ -25,6 +25,14 @@ class MedicamentoController
 
     public function create(): void
     {
+        $dados = [
+            'nome' => '',
+            'principio_ativo' => '',
+            'fabricante' => '',
+            'unidade_medida' => '',
+            'estoque_minimo' => 0
+        ];
+
         require_once __DIR__ . '/../Views/medicamentos/create.php';
     }
 
@@ -34,7 +42,8 @@ class MedicamentoController
             'nome' => trim($_POST['nome'] ?? ''),
             'principio_ativo' => trim($_POST['principio_ativo'] ?? ''),
             'fabricante' => trim($_POST['fabricante'] ?? ''),
-            'unidade_medida' => trim($_POST['unidade_medida'] ?? '')
+            'unidade_medida' => trim($_POST['unidade_medida'] ?? ''),
+            'estoque_minimo' => (int) ($_POST['estoque_minimo'] ?? 0)
         ];
 
         $erro = $this->validar($dados);
@@ -42,8 +51,7 @@ class MedicamentoController
         if ($erro !== null) {
             $_SESSION['erro'] = $erro;
             $_SESSION['dados'] = $dados;
-
-            header('Location: /ubs-estoque/public/medicamentos/create');
+            header('Location: /medicamentos/create');
             exit;
         }
 
@@ -57,7 +65,7 @@ class MedicamentoController
             $_SESSION['erro'] = 'Não foi possível cadastrar o medicamento.';
         }
 
-        header('Location: /ubs-estoque/public/medicamentos');
+        header('Location: /medicamentos');
         exit;
     }
 
@@ -67,7 +75,7 @@ class MedicamentoController
 
         if ($medicamento === null) {
             $_SESSION['erro'] = 'Medicamento não encontrado.';
-            header('Location: /ubs-estoque/public/medicamentos');
+            header('Location: /medicamentos');
             exit;
         }
 
@@ -80,20 +88,21 @@ class MedicamentoController
             'nome' => trim($_POST['nome'] ?? ''),
             'principio_ativo' => trim($_POST['principio_ativo'] ?? ''),
             'fabricante' => trim($_POST['fabricante'] ?? ''),
-            'unidade_medida' => trim($_POST['unidade_medida'] ?? '')
+            'unidade_medida' => trim($_POST['unidade_medida'] ?? ''),
+            'estoque_minimo' => (int) ($_POST['estoque_minimo'] ?? 0)
         ];
 
         $erro = $this->validar($dados);
 
         if ($erro !== null) {
             $_SESSION['erro'] = $erro;
-            header('Location: /ubs-estoque/public/medicamentos/edit/' . $id);
+            header('Location: /medicamentos/edit/' . $id);
             exit;
         }
 
         if ($this->medicamento->buscarPorId($id) === null) {
             $_SESSION['erro'] = 'Medicamento não encontrado.';
-            header('Location: /ubs-estoque/public/medicamentos');
+            header('Location: /medicamentos');
             exit;
         }
 
@@ -107,7 +116,7 @@ class MedicamentoController
             $_SESSION['erro'] = 'Não foi possível atualizar o medicamento.';
         }
 
-        header('Location: /ubs-estoque/public/medicamentos');
+        header('Location: /medicamentos');
         exit;
     }
 
@@ -115,7 +124,7 @@ class MedicamentoController
     {
         if ($this->medicamento->buscarPorId($id) === null) {
             $_SESSION['erro'] = 'Medicamento não encontrado.';
-            header('Location: /ubs-estoque/public/medicamentos');
+            header('Location: /medicamentos');
             exit;
         }
 
@@ -129,7 +138,7 @@ class MedicamentoController
             $_SESSION['erro'] = 'Não foi possível excluir o medicamento.';
         }
 
-        header('Location: /ubs-estoque/public/medicamentos');
+        header('Location: /medicamentos');
         exit;
     }
 
@@ -145,6 +154,10 @@ class MedicamentoController
 
         if ($dados['unidade_medida'] === '') {
             return 'Informe a unidade de medida.';
+        }
+
+        if ($dados['estoque_minimo'] < 0) {
+            return 'O estoque mínimo não pode ser negativo.';
         }
 
         return null;
